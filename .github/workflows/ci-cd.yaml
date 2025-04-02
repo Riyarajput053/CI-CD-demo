@@ -55,6 +55,6 @@ jobs:
 
     - name: Deploy to AWS EC2
       run: |
-        docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
+        docker pull 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
         docker stop $(docker ps -aq) || true
-        docker run -d -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
+        docker run -d -p 8000:8000 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
