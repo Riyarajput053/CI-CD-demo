@@ -39,19 +39,19 @@ jobs:
     - name: Set up AWS CLI
       run: |
         sudo apt-get update && sudo apt-get install -y awscli
-        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws configure set default.region ${{ secrets.AWS_REGION }}
+        aws configure set aws_access_key_id AKIATCKARAOGGBGMAXQT
+        aws configure set aws_secret_access_key 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
+        aws configure set default.region us-east-1
 
     - name: Authenticate with AWS ECR
       run: |
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125601164.dkr.ecr.us-east-1.amazonaws.com
 
     - name: Build and Push Docker Image to ECR
       run: |
-        docker build -t ${{ secrets.ECR_REPO }} .
-        docker tag ${{ secrets.ECR_REPO }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
-        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
+        docker build -t ml-pipeline .
+        docker tag ml-pipeline:latest 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
+        docker push 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
 
     - name: Deploy to AWS EC2
       run: |

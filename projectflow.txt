@@ -17,3 +17,16 @@
 8. login to ecr : aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
 
 9. tag the docker image for ecr : docker tag ml-pipeline:latest 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
+
+10. push image to ecr : docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/ml-api:latest
+
+11. create an ec2 instance on aws console
+
+12. set up github actions
+
+13. connect ec2 instance
+
+14. run the commands in ec2 instace which are given in github actions.
+
+15. create yaml file in .github->workflows
+
