@@ -3,15 +3,15 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Run only on main branch pushes
+      - main
   pull_request:
     branches:
-      - main  # Run CI checks on PRs
+      - main
 
 jobs:
   ci:
     name: Continuous Integration
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Using GitHub-hosted Ubuntu Runner
 
     steps:
     - name: Checkout Repository
@@ -32,8 +32,8 @@ jobs:
 
   cd:
     name: Continuous Deployment
-    runs-on: ubuntu-latest
-    needs: ci  # Deploy only if CI passes
+    runs-on: self-hosted  # Using Self-Hosted Runner on EC2
+    needs: ci  # CD runs only if CI passes
 
     steps:
     - name: Checkout Repository
@@ -58,10 +58,6 @@ jobs:
 
     - name: Deploy to AWS EC2
       run: |
-        echo "${{ secrets.EC2_SSH_KEY }}" > ec2-key.pem
-        chmod 400 ec2-key.pem
-        ssh -o StrictHostKeyChecking=no -i ec2-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
-          docker stop $(docker ps -aq) || true
-          docker run -d -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
-        EOF
+        docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
+        docker stop $(docker ps -aq) || true
+        docker run -d -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO }}:latest
