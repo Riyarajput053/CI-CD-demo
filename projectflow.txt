@@ -2,7 +2,7 @@
 
 2. dockerize 
 
-3. start docker desktopS
+3. start docker desktop
 
 4. build and run docker container
     docker build -t ml-pipeline .
@@ -29,4 +29,5 @@
 14. run the commands in ec2 instace which are given in github actions.
 
 15. create yaml file in .github->workflows
+
 
