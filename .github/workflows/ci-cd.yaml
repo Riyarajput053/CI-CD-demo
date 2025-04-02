@@ -11,7 +11,7 @@ on:
 jobs:
   ci:
     name: Continuous Integration
-    runs-on: ubuntu-latest  # Using GitHub-hosted Ubuntu Runner
+    runs-on: ubuntu-latest  # GitHub-hosted Ubuntu runner
 
     steps:
     - name: Checkout Repository
@@ -26,10 +26,13 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-   
+    - name: Run Tests
+      run: |
+        pytest tests/  # Ensure you have test cases in a `tests/` directory
+
   cd:
     name: Continuous Deployment
-    runs-on: self-hosted 
+    runs-on: self-hosted  # Self-hosted GitHub Runner on EC2
     needs: ci  
 
     steps:
@@ -39,8 +42,11 @@ jobs:
     - name: Set up AWS CLI
       run: |
         sudo apt-get update && sudo apt-get install -y awscli
-        aws configure set aws_access_key_id AKIATCKARAOGGBGMAXQT
-        aws configure set aws_secret_access_key 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
+
+    - name: Configure AWS Credentials
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set default.region us-east-1
 
     - name: Authenticate with AWS ECR
@@ -56,5 +62,6 @@ jobs:
     - name: Deploy to AWS EC2
       run: |
         docker pull 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
-        docker stop $(docker ps -aq) || true
+        docker stop $(docker ps -q) || true
+        docker rm $(docker ps -aq) || true  # Ensure all stopped containers are removed
         docker run -d -p 8000:8000 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
