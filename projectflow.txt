@@ -1,0 +1,19 @@
+1. in src create all pipeline components, app (flaskapi) and run them 
+
+2. dockerize 
+
+3. start docker desktopS
+
+4. build and run docker container
+    docker build -t ml-pipeline .
+    docker run --rm ml-pipeline
+
+5. Create IAM user, copu access id and secret access key
+
+6. aws conifgure
+
+7. create ecr repo :  aws ecr create-repository --repository-name ml-pipeline
+
+8. login to ecr : aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
+
+9. tag the docker image for ecr : docker tag ml-pipeline:latest 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
