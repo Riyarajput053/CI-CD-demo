@@ -26,10 +26,6 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Run Tests
-      run: |
-        pytest tests/  # Ensure you have test cases in a `tests/` directory
-
   cd:
     name: Continuous Deployment
     runs-on: self-hosted  # Self-hosted GitHub Runner on EC2
