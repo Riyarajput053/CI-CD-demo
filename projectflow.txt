@@ -33,8 +33,6 @@
       unzip awscliv2.zip
       sudo ./aws/install
 
-
-
 13. run the commands in ec2 instance which are given in github actions to set up self runner.
 
 14. create yaml file in .github->workflows
