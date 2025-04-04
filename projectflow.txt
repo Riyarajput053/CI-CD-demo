@@ -6,7 +6,7 @@
 
 4. build and run docker container
     docker build -t ml-pipeline .
-    docker run --rm ml-pipeline
+    docker run -p 8000:8000 ml-pipeline
 
 5. Create IAM user, copy access id and secret access key
 
@@ -28,9 +28,12 @@
       sudo sh get-docker.sh
       sudo usermod -aG docker ubuntu
       newgrp docker
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      sudo apt install unzip
+      unzip awscliv2.zip
+      sudo ./aws/install
 
 
-12. connect ec2 instance
 
 13. run the commands in ec2 instance which are given in github actions to set up self runner.
 
