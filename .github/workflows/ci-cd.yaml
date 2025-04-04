@@ -26,7 +26,7 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
-
+# continous deployment 
   cd:
     name: Continuous Deployment
     runs-on: self-hosted
