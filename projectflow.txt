@@ -21,6 +21,14 @@
 10. push image to ecr : docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
 
 11. create an ec2 instance on aws console
+      sudo apt-get update -y
+      sudo apt-get upgrade
+      ## Required (Because Docker is'nt there in our EC2 server - [docker --version])
+      curl -fsSL https://get.docker.com -o get-docker.sh
+      sudo sh get-docker.sh
+      sudo usermod -aG docker ubuntu
+      newgrp docker
+
 
 12. connect ec2 instance
 
@@ -29,3 +37,6 @@
 14. create yaml file in .github->workflows
 
 
+
+n_est = [100, 50, 10]
+[2 5]
