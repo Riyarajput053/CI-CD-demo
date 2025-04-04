@@ -43,6 +43,11 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
+    - name: Stop & Remove Previous Containers
+      run: |
+        docker stop $(docker ps -q) || true
+        docker rm $(docker ps -aq) || true
+
     - name: Run Docker image
       run: |
         docker run -d \
