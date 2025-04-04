@@ -42,19 +42,15 @@ jobs:
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set default.region us-east-1
 
-    - name: Authenticate with AWS ECR
-      run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125601164.dkr.ecr.us-east-1.amazonaws.com
+    -- name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build and Push Docker Image to ECR
-      run: |
-        docker build -t ml-pipeline .
-        docker tag ml-pipeline:latest 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
-        docker push 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
+      - name: Run Docker image
+        run: |
+          docker run -d \
+          -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+          -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+          -e AWS_DEFAULT_REGION="${{ secrets.AWS_DEFAULT_REGION }}" \
+          -p 8080:8080 211125601164.dkr.ecr.us-east-1.amazonaws.com/cicd-pipeline
 
-    - name: Deploy to AWS EC2
-      run: |
-        docker pull 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
-        docker stop $(docker ps -q) || true
-        docker rm $(docker ps -aq) || true
-        docker run -d -p 8000:8000 211125601164.dkr.ecr.us-east-1.amazonaws.com/ml-pipeline:latest
